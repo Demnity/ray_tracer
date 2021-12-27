@@ -6,7 +6,17 @@ Vec3 Lerp(const double t, const Vec3 &u1, const Vec3 &u2) {
     return (1 - t) * u1 + t * u2;
 }
 
+bool hit_sphere(const Point3 &center, double radius, const Ray &ray) {
+    Vec3 ray_o_to_center = ray.o() - center;
+    double a = dot(ray.d(), ray.d());
+    double b = 2 * dot(ray.d(), ray_o_to_center);
+    double c = dot(ray_o_to_center, ray_o_to_center) - radius * radius;
+    return (b * b - 4 * a * c) >= 0;
+}
+
 Color ray_color(const Ray &r) {
+    if(hit_sphere(Point3(0., 0., -3.), 2, r))
+        return Color(1., 0., 0.);
     Vec3 unit_direction = unit(r.d());
     double t = 0.5 * (unit_direction.y() + 1.0);
     return (1. - t) * Color(1.0, 1.0, 1.0) + t * Color(0.5, 0.7, 1.0);
