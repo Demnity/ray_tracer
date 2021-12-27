@@ -95,7 +95,7 @@ inline Vec3 operator*(double t, const Vec3 &v) {
 }
 
 inline Vec3 operator/(const Vec3 &v, double t) {
-    return v * 1 / t;
+    return v * (1 / t);
 }
 
 inline double dot(const Vec3 &v1, const Vec3 &v2) {

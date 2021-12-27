@@ -13,28 +13,40 @@ Color ray_color(const Ray &r) {
 }
 
 int main() {
+    //image ratio
     const double aspect_ratio = 16. / 9.;
 
+    //image width and height
     const int max_height = 400;
     const int max_width = aspect_ratio * max_height;
 
+    //defining the near plane width and height
     const double focal_length = 1.;
     const double view_height = 2.;
     const double view_width = aspect_ratio * view_height;
 
-    const Vec3 view_horizontal(0., view_width, 0.);
-    const Vec3 view_vertical(view_height, 0., 0.);
-    const Vec3 lower_left_coord(-view_height/2, -view_width/2, -focal_length);
+    const Vec3 view_horizontal(view_width, 0., 0.);
+    const Vec3 view_vertical(0., view_height, 0.);
+    const Vec3 lower_left_coord(-view_width/2, -view_height/2, -focal_length);
 
+    //origin of the camera
     const Point3 origin(0., 0., 0.);
 
     std::cout << "P3\n" << max_width << " " << max_height << "\n255\n";
     for(int j = max_height - 1; j > 0; --j) {
+        //progress bar
         std::cerr << "\nProgress: " << (max_height - j - 1) * 100/ max_height << '%' << std::flush;
+
+        //render loop, could be parallelized
         for(int i = 0; i < max_width; ++i) {
-            double u = j / (max_height - 1);
-            double v = i / (max_width  - 1);
+            //ratio to trace rays to
+            double u = double(j) / (max_height - 1);
+            double v = double(i) / (max_width  - 1);
+
+            //tracing the ray
             Ray ray(origin, lower_left_coord + u * view_vertical + v * view_horizontal - origin);
+
+            //outputting color
             Color color = ray_color(ray);
             write_color(std::cout, color);
         }
