@@ -39,7 +39,8 @@ bool Sphere::intersect(const Ray &ray, double t_min, double t_max, Interaction &
     }
 
     //recording intersection info
-    isect.normal = (ray.at(t) - center) / radius;
+
+    isect.set_face_normal(ray, (ray.at(t) - center) / radius);
     isect.p = ray.at(t);
     isect.t = t;
 
