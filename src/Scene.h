@@ -18,11 +18,11 @@ public:
 
 public:
     Scene() {}
-    Scene(shared_ptr<Shape> &shapes) {
-        addShape(shapes);
+    Scene(shared_ptr<Shape> &shape) {
+        addShape(shape);
     }
-    void addShape(shared_ptr<Shape> &shapes) {
-        aggregate.push_back(shapes);
+    void addShape(const shared_ptr<Shape> &shape) {
+        aggregate.push_back(shape);
     }
     void clear() {
         aggregate.clear();
