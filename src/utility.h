@@ -39,6 +39,12 @@ inline double rand_num(double min, double max) {
     return min + (max - min) * rand_num();
 }
 
+inline double clamp(double x, double min, double max) {
+    if(x < min) return min;
+    if(x > max) return max;
+    return x;
+}
+
 
 
 // Common Headers

@@ -4,6 +4,7 @@
 #include "scene.h"
 #include "sphere.h"
 #include "utility.h"
+#include "camera.h"
 
 Color ray_color(const Ray &ray, const Scene &scene) {
     Interaction isect;
@@ -31,13 +32,11 @@ int main() {
     const double focal_length = 1.;
     const double view_height = 2.;
     const double view_width = aspect_ratio * view_height;
+    const Point3 cam_origin(0., 0., 0.);
+    Camera camera(cam_origin, focal_length, view_width, view_height);
 
-    const Vec3 view_horizontal(view_width, 0., 0.);
-    const Vec3 view_vertical(0., view_height, 0.);
-    const Vec3 lower_left_coord(-view_width/2, -view_height/2, -focal_length);
-
-    //origin of the camera
-    const Point3 origin(0., 0., 0.);
+    //Super sampling
+    const int samples_per_pixel = 100;
 
     ////SCENE
     Scene scene;
@@ -45,22 +44,26 @@ int main() {
     scene.addShape(make_shared<Sphere>(Point3(0,-100.5,-1), 100));
 
     std::cout << "P3\n" << max_width << " " << max_height << "\n255\n";
+    //render loop, could be parallelized
     for(int j = max_height - 1; j > 0; --j) {
         //progress bar
         std::cerr << "\nProgress: " << (max_height - j - 1) * 100/ max_height << '%' << std::flush;
 
-        //render loop, could be parallelized
         for(int i = 0; i < max_width; ++i) {
-            //ratio to trace rays to
-            double u = double(j) / (max_height - 1);
-            double v = double(i) / (max_width  - 1);
+            Color color(0., 0., 0.);
+            //super sampling
+            for(int k = 0; k < samples_per_pixel; k++) {
+                //ratio to trace rays to
+                double u = (i + rand_num()) / (max_width - 1);
+                double v = (j + rand_num()) / (max_height - 1);
 
-            //tracing the ray
-            Ray ray(origin, lower_left_coord + u * view_vertical + v * view_horizontal - origin);
+                //tracing the ray
+                Ray ray = camera.spawn_ray(u, v);
 
-            //outputting color
-            Color color = ray_color(ray, scene);
-            write_color(std::cout, color);
+                //outputting color
+                color += ray_color(ray, scene);
+            }
+            write_color(std::cout, color, samples_per_pixel);
         }
     }
     std::cerr << "\nDone.\n";
