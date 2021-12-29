@@ -6,12 +6,18 @@
 #include "utility.h"
 #include "camera.h"
 
-Color ray_color(const Ray &ray, const Scene &scene) {
+//This is very wrong, light is yet to be defined!!
+Color ray_color(const Ray &ray, const Scene &scene, int depth) {
     Interaction isect;
+
+    //Reaching max depth
+    if(depth <= 0) return Color(0., 0., 0.);
+
     if(scene.intersect(ray, 0, infinity, isect)) {
         //Normal interpolation
         //Taking normal range from [-1,1] to [0,1] for coloring
-        return 0.5 * (isect.normal + Color(1., 1., 1.));
+        Vec3 reflection_point_in_unit_sphere = isect.p + isect.normal + rand_in_unit_sphere();
+        return 0.5 * ray_color(Ray(isect.p + 0.00001 * isect.normal, reflection_point_in_unit_sphere - isect.p), scene, depth - 1);
     }
     Vec3 unit_direction = unit(ray.d());
     double t = 0.5 * (unit_direction.y() + 1.0);
@@ -35,8 +41,9 @@ int main() {
     const Point3 cam_origin(0., 0., 0.);
     Camera camera(cam_origin, focal_length, view_width, view_height);
 
-    //Super sampling
+    ////Super sampling
     const int samples_per_pixel = 100;
+    const int max_depth = 50;
 
     ////SCENE
     Scene scene;
@@ -61,7 +68,7 @@ int main() {
                 Ray ray = camera.spawn_ray(u, v);
 
                 //outputting color
-                color += ray_color(ray, scene);
+                color += ray_color(ray, scene, max_depth);
             }
             write_color(std::cout, color, samples_per_pixel);
         }

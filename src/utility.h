@@ -39,6 +39,23 @@ inline double rand_num(double min, double max) {
     return min + (max - min) * rand_num();
 }
 
+inline Vec3 rand_vec3() {
+    return Vec3(rand_num(), rand_num(), rand_num());
+}
+
+inline Vec3 rand_vec3(double min, double max) {
+    //return min + (max - min) * rand_vec3();
+    return Vec3(rand_num(min, max), rand_num(min, max), rand_num(min, max));
+}
+
+Vec3 rand_in_unit_sphere() {
+    while (true) {
+        auto p = rand_vec3(-1,1);
+        if (p.length_squared() >= 1) continue;
+        return p;
+    }
+}
+
 inline double clamp(double x, double min, double max) {
     if(x < min) return min;
     if(x > max) return max;
