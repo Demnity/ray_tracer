@@ -5,8 +5,8 @@
 #ifndef RAY_TRACER_INTERACTION_H
 #define RAY_TRACER_INTERACTION_H
 
-#include "Vec3.h"
-#include "Ray.h"
+#include "vec3.h"
+#include "ray.h"
 
 struct Interaction {
     Vec3 normal;

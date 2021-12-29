@@ -1,8 +1,8 @@
 #include <iostream>
-#include "Color.h"
-#include "Ray.h"
-#include "Scene.h"
-#include "Sphere.h"
+#include "color.h"
+#include "ray.h"
+#include "scene.h"
+#include "sphere.h"
 #include "utility.h"
 
 Color ray_color(const Ray &ray, const Scene &scene) {

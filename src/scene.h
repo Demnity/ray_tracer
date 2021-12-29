@@ -7,7 +7,7 @@
 
 #include <vector>
 #include <memory>
-#include "Shape.h"
+#include "shape.h"
 
 using std::shared_ptr;
 using std::make_shared;

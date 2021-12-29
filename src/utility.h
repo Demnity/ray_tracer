@@ -42,7 +42,7 @@ inline double rand_num(double min, double max) {
 
 
 // Common Headers
-#include "Ray.h"
-#include "Vec3.h"
+#include "ray.h"
+#include "vec3.h"
 
 #endif //RAY_TRACER_UTILITY_H

@@ -4,13 +4,13 @@ project(ray_tracer)
 set(CMAKE_CXX_STANDARD 11)
 
 set ( SOURCE_ONE_WEEKEND
-        src/Color.h
-        src/Interaction.h
-        src/Ray.h
-        src/Shape.h
-        src/Vec3.h
-        src/Sphere.h
+        src/color.h
+        src/interaction.h
+        src/ray.h
+        src/shape.h
+        src/vec3.h
+        src/sphere.h
         src/main.cpp
-        src/Scene.h src/utility.h)
+        src/scene.h src/utility.h)
 
 add_executable(ray_tracer ${SOURCE_ONE_WEEKEND})

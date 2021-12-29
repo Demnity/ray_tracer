@@ -5,8 +5,8 @@
 #ifndef RAY_TRACER_SHAPE_H
 #define RAY_TRACER_SHAPE_H
 
-#include "Interaction.h"
-#include "Ray.h"
+#include "interaction.h"
+#include "ray.h"
 
 class Shape {
 public:

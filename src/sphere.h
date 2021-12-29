@@ -5,7 +5,7 @@
 #ifndef RAY_TRACER_SPHERE_H
 #define RAY_TRACER_SPHERE_H
 
-#include "Shape.h"
+#include "shape.h"
 
 class Sphere : public Shape {
 public:
