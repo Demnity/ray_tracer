@@ -5,6 +5,8 @@
 #include "sphere.h"
 #include "utility.h"
 #include "camera.h"
+#include "lambertian.h"
+#include "metal.h"
 
 //This is very wrong, light is yet to be defined!!
 Color ray_color(const Ray &ray, const Scene &scene, int depth) {
@@ -15,9 +17,11 @@ Color ray_color(const Ray &ray, const Scene &scene, int depth) {
 
     //range from 0.000001 to inf due to errors in floating point
     if(scene.intersect(ray, 0.00001, infinity, isect)) {
-        //Taking normal range from [-1,1] to [0,1] for coloring
-        Vec3 reflection_point_in_unit_sphere = isect.p + isect.normal + rand_in_unit_sphere();
-        return 0.5 * ray_color(Ray(isect.p , reflection_point_in_unit_sphere - isect.p), scene, depth - 1);
+        Ray wi;
+        Color albedo;
+        if(isect.material->scatter(ray, wi, isect, albedo))
+            return albedo * ray_color(wi, scene, depth - 1);
+        return Color(0., 0., 0.);
     }
     Vec3 unit_direction = unit(ray.d());
     double t = 0.5 * (unit_direction.y() + 1.0);
@@ -47,8 +51,16 @@ int main() {
 
     ////SCENE
     Scene scene;
-    scene.addShape(make_shared<Sphere>(Point3(0,0,-1), 0.5));
-    scene.addShape(make_shared<Sphere>(Point3(0,-100.5,-1), 100));
+
+    shared_ptr<Lambertian> material_ground = make_shared<Lambertian>(Color(0.8, 0.8, 0.0));
+    shared_ptr<Lambertian> material_center = make_shared<Lambertian>(Color(0.7, 0.3, 0.3));
+    shared_ptr<Metal> material_left   = make_shared<Metal>(Color(0.8, 0.8, 0.8));
+    shared_ptr<Metal> material_right  = make_shared<Metal>(Color(0.8, 0.6, 0.2));
+
+    scene.addShape(make_shared<Sphere>(Point3( 0.0, -100.5, -1.0), 100.0, material_ground));
+    scene.addShape(make_shared<Sphere>(Point3( 0.0,    0.0, -1.0),   0.5, material_center));
+    scene.addShape(make_shared<Sphere>(Point3(-1.0,    0.0, -1.0),   0.5, material_left));
+    scene.addShape(make_shared<Sphere>(Point3( 1.0,    0.0, -1.0),   0.5, material_right));
 
     std::cout << "P3\n" << max_width << " " << max_height << "\n255\n";
     //render loop, could be parallelized

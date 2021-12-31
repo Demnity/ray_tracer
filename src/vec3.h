@@ -68,6 +68,12 @@ public:
     double length() {
         return sqrt(e[0] * e[0] + e[1] * e[1] + e[2] * e[2]);
     }
+
+    //returns true if all elements are close to 0
+    bool near_zero() const {
+        const double s = 1e-8;
+        return (fabs(e[0]) < s) && (fabs(e[1]) < s) && (fabs(e[2]) < s);
+    }
 };
 
 inline std::ostream& operator<<(std::ostream& out, const Vec3& v) {
@@ -118,6 +124,10 @@ inline Vec3 cross(const Vec3 &v1, const Vec3 &v2) {
 
 inline Vec3 unit(Vec3 v) {
     return v / v.length();
+}
+
+Vec3 reflect(const Vec3 &v, const Vec3 &normal) {
+    return v - 2 * dot(v, normal) * normal;
 }
 
 //aliases

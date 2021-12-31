@@ -13,6 +13,7 @@ public:
     Vec3 direction;
 
 public:
+    Ray() {}
     Ray(const Point3 &origin, const Vec3 &direction) : origin(origin), direction(direction) {}
 
     Point3 o() const {return origin;}

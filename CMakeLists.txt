@@ -11,6 +11,6 @@ set ( SOURCE_ONE_WEEKEND
         src/vec3.h
         src/sphere.h
         src/main.cpp
-        src/scene.h src/utility.h src/camera.h)
+        src/scene.h src/utility.h src/camera.h src/material.h src/lambertian.h src/metal.h)
 
 add_executable(ray_tracer ${SOURCE_ONE_WEEKEND})

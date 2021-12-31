@@ -11,10 +11,10 @@ class Sphere : public Shape {
 public:
     Point3 center;
     double radius;
-
+    shared_ptr<Material> material;
 public:
     Sphere() {}
-    Sphere(Point3 center, double radius) : center(center), radius(radius) {}
+    Sphere(Point3 center, double radius, shared_ptr<Material> material) : center(center), radius(radius), material(material) {}
 
     bool intersect(const Ray &ray, double t_min, double t_max, Interaction &isect) const override;
 };
@@ -43,6 +43,7 @@ bool Sphere::intersect(const Ray &ray, double t_min, double t_max, Interaction &
     isect.set_face_normal(ray, (ray.at(t) - center) / radius);
     isect.p = ray.at(t);
     isect.t = t;
+    isect.material = material;
 
     return true;
 }

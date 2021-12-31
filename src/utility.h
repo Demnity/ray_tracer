@@ -48,6 +48,7 @@ inline Vec3 rand_vec3(double min, double max) {
     return Vec3(rand_num(min, max), rand_num(min, max), rand_num(min, max));
 }
 
+//this would do cosine weighted hemisphere sampling
 Vec3 rand_in_unit_sphere() {
     while (true) {
         auto p = rand_vec3(-1,1);

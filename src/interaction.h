@@ -8,9 +8,12 @@
 #include "vec3.h"
 #include "ray.h"
 
+class Material; //forward declaration due to circular dependency
+
 struct Interaction {
     Vec3 normal;
     Point3 p;
+    shared_ptr<Material> material;
     double t;
     bool front_face;
 
