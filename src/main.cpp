@@ -7,6 +7,7 @@
 #include "camera.h"
 #include "lambertian.h"
 #include "metal.h"
+#include "dielectric.h"
 
 //This is very wrong, light is yet to be defined!!
 Color ray_color(const Ray &ray, const Scene &scene, int depth) {
@@ -46,15 +47,15 @@ int main() {
     Camera camera(cam_origin, focal_length, view_width, view_height);
 
     ////Super sampling
-    const int samples_per_pixel = 1000;
+    const int samples_per_pixel = 100;
     const int max_depth = 50;
 
     ////SCENE
     Scene scene;
 
     shared_ptr<Lambertian> material_ground = make_shared<Lambertian>(Color(0.8, 0.8, 0.0));
-    shared_ptr<Lambertian> material_center = make_shared<Lambertian>(Color(0.7, 0.3, 0.3));
-    shared_ptr<Metal> material_left   = make_shared<Metal>(Color(0.8, 0.8, 0.8), 0.8);
+    shared_ptr<Dielectric> material_center = make_shared<Dielectric>(1.5);
+    shared_ptr<Dielectric> material_left   = make_shared<Dielectric>(1.5);
     shared_ptr<Metal> material_right  = make_shared<Metal>(Color(0.8, 0.6, 0.2), 0.1);
 
     scene.addShape(make_shared<Sphere>(Point3( 0.0, -100.5, -1.0), 100.0, material_ground));
