@@ -15,9 +15,9 @@ inline std::ostream& write_color(std::ostream& out, Color color, const int &samp
     double b = color.z() / samples_per_pixel;
 
     //gamma correction, gamma = 2.0
-//    r = sqrt(r);
-//    g = sqrt(g);
-//    b = sqrt(b);
+    r = sqrt(r);
+    g = sqrt(g);
+    b = sqrt(b);
 
     //clamp the values then turn into 8bit color
     return out << static_cast<int>(256 * clamp(r, 0., 0.999))

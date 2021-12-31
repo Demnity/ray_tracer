@@ -52,7 +52,7 @@ Vec3 rand_in_unit_sphere() {
     while (true) {
         auto p = rand_vec3(-1,1);
         if (p.length_squared() >= 1) continue;
-        return p;
+        return unit(p);
     }
 }
 

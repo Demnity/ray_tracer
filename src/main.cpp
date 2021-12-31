@@ -10,14 +10,14 @@
 Color ray_color(const Ray &ray, const Scene &scene, int depth) {
     Interaction isect;
 
-    //Reaching max depth
+    //reaching max depth, terminating
     if(depth <= 0) return Color(0., 0., 0.);
 
-    if(scene.intersect(ray, 0, infinity, isect)) {
-        //Normal interpolation
+    //range from 0.000001 to inf due to errors in floating point
+    if(scene.intersect(ray, 0.00001, infinity, isect)) {
         //Taking normal range from [-1,1] to [0,1] for coloring
         Vec3 reflection_point_in_unit_sphere = isect.p + isect.normal + rand_in_unit_sphere();
-        return 0.5 * ray_color(Ray(isect.p + 0.00001 * isect.normal, reflection_point_in_unit_sphere - isect.p), scene, depth - 1);
+        return 0.5 * ray_color(Ray(isect.p , reflection_point_in_unit_sphere - isect.p), scene, depth - 1);
     }
     Vec3 unit_direction = unit(ray.d());
     double t = 0.5 * (unit_direction.y() + 1.0);
