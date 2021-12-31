@@ -42,11 +42,11 @@ int main() {
     const double focal_length = 1.;
     const double view_height = 2.;
     const double view_width = aspect_ratio * view_height;
-    const Point3 cam_origin(0., 0., 0.);
+    const Point3 cam_origin(0., 0., 3.);
     Camera camera(cam_origin, focal_length, view_width, view_height);
 
     ////Super sampling
-    const int samples_per_pixel = 100;
+    const int samples_per_pixel = 1000;
     const int max_depth = 50;
 
     ////SCENE
@@ -54,8 +54,8 @@ int main() {
 
     shared_ptr<Lambertian> material_ground = make_shared<Lambertian>(Color(0.8, 0.8, 0.0));
     shared_ptr<Lambertian> material_center = make_shared<Lambertian>(Color(0.7, 0.3, 0.3));
-    shared_ptr<Metal> material_left   = make_shared<Metal>(Color(0.8, 0.8, 0.8));
-    shared_ptr<Metal> material_right  = make_shared<Metal>(Color(0.8, 0.6, 0.2));
+    shared_ptr<Metal> material_left   = make_shared<Metal>(Color(0.8, 0.8, 0.8), 0.8);
+    shared_ptr<Metal> material_right  = make_shared<Metal>(Color(0.8, 0.6, 0.2), 0.1);
 
     scene.addShape(make_shared<Sphere>(Point3( 0.0, -100.5, -1.0), 100.0, material_ground));
     scene.addShape(make_shared<Sphere>(Point3( 0.0,    0.0, -1.0),   0.5, material_center));
