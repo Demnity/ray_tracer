@@ -54,13 +54,14 @@ int main() {
     Scene scene;
 
     shared_ptr<Lambertian> material_ground = make_shared<Lambertian>(Color(0.8, 0.8, 0.0));
-    shared_ptr<Dielectric> material_center = make_shared<Dielectric>(1.5);
+    shared_ptr<Lambertian> material_center = make_shared<Lambertian>(Color(0.1, 0.2, 0.5));
     shared_ptr<Dielectric> material_left   = make_shared<Dielectric>(1.5);
     shared_ptr<Metal> material_right  = make_shared<Metal>(Color(0.8, 0.6, 0.2), 0.1);
 
     scene.addShape(make_shared<Sphere>(Point3( 0.0, -100.5, -1.0), 100.0, material_ground));
     scene.addShape(make_shared<Sphere>(Point3( 0.0,    0.0, -1.0),   0.5, material_center));
     scene.addShape(make_shared<Sphere>(Point3(-1.0,    0.0, -1.0),   0.5, material_left));
+    scene.addShape(make_shared<Sphere>(Point3(-1.0,    0.0, -1.0),  -0.4, material_left));
     scene.addShape(make_shared<Sphere>(Point3( 1.0,    0.0, -1.0),   0.5, material_right));
 
     std::cout << "P3\n" << max_width << " " << max_height << "\n255\n";

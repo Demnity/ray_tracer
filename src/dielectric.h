@@ -7,13 +7,23 @@
 
 #include "material.h"
 #include "interaction.h"
+#include "utility.h"
 
 class Dielectric : public Material {
 public:
     double eta;
+
 public:
     Dielectric(double eta) : eta(eta) {}
     bool scatter(const Ray &wo, Ray &wi, const Interaction &isect, Color &albedo) const override;
+
+private:
+    static double fresnel(double cosine, double ref_idx) {
+        // Use Schlick's approximation for reflectance.
+        auto r0 = (1-ref_idx) / (1+ref_idx);
+        r0 = r0*r0;
+        return r0 + (1-r0)*pow((1 - cosine),5);
+    }
 };
 
 bool Dielectric::scatter(const Ray &wo, Ray &wi, const Interaction &isect, Color &albedo) const {
@@ -23,12 +33,12 @@ bool Dielectric::scatter(const Ray &wo, Ray &wi, const Interaction &isect, Color
     double ior = isect.front_face ? 1 / eta : eta;
 
     Vec3 unit_dir = unit(wo.d());
-    double cos_theta = dot(wo.d(), isect.normal);
+    double cos_theta = fmin(dot(-wo.d(), isect.normal), 1.);
     double sin_theta = sqrt(1 - cos_theta * cos_theta);
     Vec3 out_dir;
 
     //if the ray angle with the normal is larger than the critical angle
-    if(ior * sin_theta > 1.) {
+    if(ior * sin_theta > 1. || fresnel(cos_theta, ior) > rand_num()) {
         //Reflection
         out_dir = reflect(unit_dir, isect.normal);
     } else {
@@ -37,7 +47,7 @@ bool Dielectric::scatter(const Ray &wo, Ray &wi, const Interaction &isect, Color
     }
 
     wi = Ray(isect.p, out_dir);
-    
+
     return true;
 }
 
